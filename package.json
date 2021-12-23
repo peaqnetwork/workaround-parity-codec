@@ -1,0 +1,48 @@
+{
+  "name": "workaround-parity-codec",
+  "description": "Interface between substrate node and application",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Peaq Network",
+    "email": "info@peaq.network"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "^14.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run compile && npm run jest",
+    "lint": "eslint src/. test/. --config .eslintrc.json --ext .ts --fix",
+    "dev": "ts-node-dev --no-notify src/",
+    "start": "npm run compile && node lib/",
+    "jest": "jest --forceExit",
+    "compile": "shx rm -rf lib/ && tsc"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ],
+    "ignore": []
+  },
+  "dependencies": {
+    "@feathersjs/express": "^4.5.11",
+    "@feathersjs/feathers": "^4.5.11",
+    "@feathersjs/socketio": "^4.5.11"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}
