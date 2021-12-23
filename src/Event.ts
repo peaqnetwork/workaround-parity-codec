@@ -25,9 +25,9 @@ export default class EventDecoder {
         // hsh = "0xed3ff0aa6a665f3cd2413547c533f345b50d4ad20c1e9f957f93429ef6395b6f";
         console.log("hhitss:: ", hsh);
 
-        // var wsp = new WsProvider("https://fn1.test.peaq.network");
-        // var api = await ApiPromise.create({ provider: wsp });
-        var api = await (await ApiPromise.create()).isReady;
+        var wsp = new WsProvider("https://fn1.test.peaq.network");
+        var api = await (await ApiPromise.create({ provider: wsp })).isReady;
+        // var api = await (await ApiPromise.create()).isReady;
 
         console.log("connected: ", api.isConnected);
         // console.log("ready: ", await api.isReady);
