@@ -1,6 +1,7 @@
 import feathers from '@feathersjs/feathers';
 import '@feathersjs/transport-commons';
 import express from '@feathersjs/express';
+import EventDecoder from './src/Event';
 // import socketio from '@feathersjs/socketio';
 
 
@@ -17,6 +18,9 @@ app.use(express.static(__dirname));
 app.configure(express.rest());
 // Configure Socket.io real-time APIs
 // app.configure(socketio());
+
+// Register our messages service
+app.use('/events', new EventDecoder());
 // Express middleware with a nicer error handler
 app.use(express.errorHandler());
 
