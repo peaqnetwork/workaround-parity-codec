@@ -5,7 +5,7 @@ import { u8aConcat, u8aToHex, u8aToU8a, hexToU8a, hexStripPrefix } from '@polkad
 import { RegistryTypes } from '@polkadot/types-codec/types';
 import config from '../config/default.json';
 // This is the interface for the event data
-interface Storage {
+interface Attribute {
     message: string;
     name?: String;
     value?: any;
@@ -18,11 +18,63 @@ interface StorageKey {
     key: string;
 }
 
-
-
 // A Storage service that allows to create chain state storage key
 // and fetch storage data from chain
 export default class StorageDecoder {
+
+    async get(hash_key: string) {
+        console.log("hash key received:: ", hash_key);
+
+        var custom_types: RegistryTypes = {
+            Attribute: {
+                name: "Text",
+                value: "Text",
+                validity: "BlockNumber",
+                created: "Moment"
+            }
+        }
+
+        // init the api connection
+        var wsp = new WsProvider(config.testnet);
+        var api = await (await ApiPromise.create({ provider: wsp, types: custom_types })).isReady;
+
+        console.log("connected: ", api.isConnected);
+
+        // fetch chain state storage data using the hash key
+        var storage = await api.rpc.state.getStorage(hash_key);
+
+        console.log(`Returned Raw Storage data:: ${storage} \n\n`);
+
+        // convert hash hex string to bytes
+        var bytes = hexToU8a("" + storage);
+        // create human data from custom registry types added to api create above
+        var decoded = api.registry.createType("Attribute", bytes);
+        console.log(`decoded data: ${decoded}`);
+
+        var res: Attribute = {
+            message: "STORAGE FOUND"
+        }
+
+        if (storage == "") {
+            res.message = "NO STORAGE FOUND";
+            api.disconnect();
+            return res;
+        }
+
+        // parse decoded data to json format
+        var json = JSON.parse(JSON.stringify(decoded.toHuman()));
+
+        res.name = json["name"];
+        res.value = json["value"];
+        res.validity = json["validity"];
+        res.created = json["created"];
+
+        api.disconnect();
+
+        return res;
+
+    }
+
 
     async create(data: StorageKey) {
         const address = data.address;
