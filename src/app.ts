@@ -1,7 +1,9 @@
 import feathers from '@feathersjs/feathers';
 import '@feathersjs/transport-commons';
 import express from '@feathersjs/express';
-import EventDecoder from './src/Event';
+import EventDecoder from './services/Event';
+import StorageDecoder from './services/Storage';
+import config from './config/default.json';
 // import socketio from '@feathersjs/socketio';
 
 
@@ -21,6 +23,7 @@ app.configure(express.rest());
 
 // Register our messages service
 app.use('/events', new EventDecoder());
+app.use('/storage', new StorageDecoder());
 // Express middleware with a nicer error handler
 app.use(express.errorHandler());
 
@@ -32,7 +35,7 @@ app.use(express.errorHandler());
 // app.publish(data => app.channel('events'));
 
 // Start the server
-app.listen(3030).on('listening', () =>
+app.listen(config.port).on('listening', () =>
     console.log('Scale codec server listening on 127.0.0.1:3030')
 );
 
