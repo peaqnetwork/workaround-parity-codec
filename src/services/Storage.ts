@@ -3,8 +3,8 @@ import { xxhashAsHex, blake2AsHex, blake2AsU8a } from '@polkadot/util-crypto'
 import { decodeAddress } from '@polkadot/keyring'
 import { u8aConcat, u8aToHex, u8aToU8a, hexToU8a, hexStripPrefix } from '@polkadot/util';
 import { RegistryTypes } from '@polkadot/types-codec/types';
-import config from '../config/default.json';
-// This is the interface for the event data
+import * as config from '../config/default.json';
+// This is the interface for the storage attribute data
 interface Attribute {
     message: string;
     name?: String;
@@ -81,7 +81,7 @@ export default class StorageDecoder {
         const name = data.key;
 
         // decode address to byte array
-        var decoded_address = decodeAddress(address, false, 42);
+        var decoded_address = decodeAddress(address, false, config.ss58Prefix);
         console.log(`decoded addr: ${decoded_address}`);
 
         // convert the name attribute to byte

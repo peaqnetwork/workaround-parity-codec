@@ -4,6 +4,8 @@ import express from '@feathersjs/express';
 import EventDecoder from './services/Event';
 import StorageDecoder from './services/Storage';
 import config from './config/default.json';
+import MultiSigDecoder from './services/MultiSig';
+import Transfer from './services/Transfer';
 // import socketio from '@feathersjs/socketio';
 
 
@@ -24,6 +26,8 @@ app.configure(express.rest());
 // Register our messages service
 app.use('/events', new EventDecoder());
 app.use('/storage', new StorageDecoder());
+app.use('/multisig', new MultiSigDecoder());
+app.use('/transfer', new Transfer());
 // Express middleware with a nicer error handler
 app.use(express.errorHandler());
 

@@ -15,7 +15,7 @@ export default class EventDecoder {
     async get(hsh: string) {
         console.log("block hash:: ", hsh);
 
-        var wsp = new WsProvider(config.testnet);
+        var wsp = new WsProvider(config.localnet);
         var api = await (await ApiPromise.create({ provider: wsp })).isReady;
         // var api = await (await ApiPromise.create()).isReady;
 
