@@ -31,7 +31,7 @@ export default class Transfer {
     async get(data: string) {
 
 
-        var wsp = new WsProvider(config.localnet);
+        var wsp = new WsProvider(config.testnet);
         var api = await (await ApiPromise.create({ provider: wsp })).isReady;
 
         var bal = api.tx.balances.transfer.callIndex;
@@ -62,7 +62,7 @@ export default class Transfer {
 
     async create(data: TransferRequest) {
         // init the api connection
-        var wsp = new WsProvider(config.localnet);
+        var wsp = new WsProvider(config.testnet);
         var api = await (await ApiPromise.create({ provider: wsp })).isReady;
 
         const kr = new Keyring({ type: 'sr25519', ss58Format: config.ss58Prefix });
@@ -72,10 +72,14 @@ export default class Transfer {
         } else {
             kp = kr.createFromUri(data.signer_uri);
         }
-        // console.log(`kp: ${JSON.stringify(kp)}\n\n`);
+        console.log(`transfer kp: ${JSON.stringify(kp)}\n\n`);
+        console.log(`transfer data: ${JSON.stringify(data)}\n\n`);
 
-        await api.tx.balances
-            .transfer(data.address, data.amount).signAndSend(kp);
+        var tx = await api.tx.balances
+            .transfer(data.address, data.amount).signAndSend(kp, (result) => {
+                console.log(`transfer result: ${JSON.stringify(result)}\n\n`);
+                tx();
+            });
 
         api.disconnect();
         var res: TransferResponse = {

@@ -86,7 +86,7 @@ export default class MultiSig {
     async update(id: string, data: AsMultiSigRequest) {
 
         // init the api connection
-        var wsp = new WsProvider(config.localnet);
+        var wsp = new WsProvider(config.testnet);
         var api = await (await ApiPromise.create({ provider: wsp })).isReady;
 
         const kr = new Keyring({ type: 'sr25519', ss58Format: config.ss58Prefix });
@@ -129,7 +129,7 @@ export default class MultiSig {
     async patch(id: string, data: ApproveAsMultiSigRequest) {
 
         // init the api connection
-        var wsp = new WsProvider(config.localnet);
+        var wsp = new WsProvider(config.testnet);
         var api = await (await ApiPromise.create({ provider: wsp })).isReady;
 
         const kr = new Keyring({ type: 'sr25519', ss58Format: config.ss58Prefix });
